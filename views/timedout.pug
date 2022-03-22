@@ -1,0 +1,15 @@
+extends _layout
+
+block declarations
+    - const title = "Forage: Request Timed Out"
+
+block content
+    #main.centered
+        h1 Timed Out
+        p The proxy did not present a page in time.
+        p
+            a(href="javascript:history.back()") To the previous page
+        p
+            a(href="javascript:location.reload()") Try again
+        p
+            a(href="/") Back to Forage

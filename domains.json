@@ -1,0 +1,32 @@
+{
+    "funnycorp.us": {
+        "stable": true,
+        "cert": "/opt/bitnami/letsencrypt/certificates/_.funnycorp.us.crt",
+        "key": "/opt/bitnami/letsencrypt/certificates/_.funnycorp.us.key"
+    },
+    "unblo.cc": {
+        "stable": true,
+        "cert": "/opt/bitnami/letsencrypt/certificates/unblo.cc.crt",
+        "key": "/opt/bitnami/letsencrypt/certificates/unblo.cc.key"
+    },
+    "cuminside.us": {
+        "stable": false,
+        "cert": "/opt/bitnami/letsencrypt/certificates/cuminside.us.crt",
+        "key": "/opt/bitnami/letsencrypt/certificates/cuminside.us.key"
+    },
+    "fclink.xyz": {
+        "stable": true,
+        "cert": "/opt/bitnami/letsencrypt/certificates/fclink.xyz.crt",
+        "key": "/opt/bitnami/letsencrypt/certificates/fclink.xyz.key"
+    },
+    "goguardian.fun": {
+        "stable": true,
+        "cert": "/opt/bitnami/letsencrypt/certificates/goguardian.fun.crt",
+        "key": "/opt/bitnami/letsencrypt/certificates/goguardian.fun.key"
+    },
+    "forage.digital": {
+        "stable": true,
+        "cert": "/opt/bitnami/letsencrypt/certificates/forage.digital.crt",
+        "key": "/opt/bitnami/letsencrypt/certificates/forage.digital.key"
+    }
+}

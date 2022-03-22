@@ -1,0 +1,128 @@
+html {
+    height: 100vh;
+    width: 100vw;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes gradient {
+    from {
+        --angle: 135deg;
+    }
+
+    to {
+        --angle: 215deg;
+    }
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: auto;
+    margin: 0;
+
+    /* Fallback if custom property and therefore the animation is not supported. */
+    --angle: 135deg;
+    animation: gradient alternate ease-in-out 10s infinite;
+    background: linear-gradient(var(--angle), #111, #222);
+    background-size: 200%;
+    background-position: -100% -100%;
+
+    color: #fff;
+    font-family: "Inconsolata", "Cascadia Mono", monospace;
+}
+
+.centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#main {
+    padding: 2em;
+    background: #222;
+    border-radius: 15px;
+    box-shadow: 0 0 5px #111;
+    animation: fadein forwards 1.5s;
+}
+
+#logo {
+    height: 96px;
+    width: 96px;
+}
+
+p {
+    margin: .5em;
+    white-space: nowrap;
+}
+
+h1 {
+    margin: 5px;
+    font-size: 3em;
+    color: #3c4;
+}
+
+.warning {
+    color: #c83;
+}
+
+a {
+    text-decoration: none;
+    color: #0cf;
+}
+
+input {
+    margin: 5px;
+    padding: 5px;
+    outline: none;
+    border: 1px #0000 solid;
+    border-radius: 5px;
+    background: #333;
+    transition: background 1s;
+    color: #fff;
+    font-family: "Inconsolata", "Cascadia Mono", monospace;
+    font-size: 1em;
+    text-align: center;
+}
+
+input:focus {
+    border: 1px #222 solid;
+}
+
+input::placeholder {
+    text-align: center;
+    color: #aaa;
+}
+
+input:focus::placeholder {
+    opacity: 0;
+}
+
+input[type="text"] {
+    min-width: fit-content;
+    width: 20vw;
+}
+
+input[type="submit"] {
+    min-width: fit-content;
+    width: 10vw;
+}
+
+input[type="submit"]:hover {
+    background: #444;
+}

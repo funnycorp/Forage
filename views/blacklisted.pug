@@ -1,0 +1,13 @@
+extends _layout
+
+block declarations
+    - const title = "Forage: Blacklisted"
+
+block content
+    #main.centered
+        h1 Blacklisted
+        p You attempted to access one of the few blacklisted sites for this proxy.
+        p
+            a(href="javascript:history.back()") To the previous page
+        p
+            a(href="/") Back to Forage

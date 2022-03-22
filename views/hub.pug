@@ -1,0 +1,26 @@
+extends _layout
+
+block declarations
+    - const title = "Forage: Hub"
+    -
+        const stabilities = Object.entries(domains)
+            .map(([domain, data]) => [domain, data.stable])
+        const stable = stabilities
+            .filter(([domain, stability]) => stability)
+            .map(([domain]) => domain)
+        const unstable = stabilities
+            .filter(([domain, stability]) => !stability)
+            .map(([domain]) => domain)
+
+block content
+    #main.centered
+        h1 Hub
+        p Below is a list of working Forage sites.
+        each domain in stable
+            - const href = "https://" + domain
+            p: a(href=href)= domain
+        p
+        p The sites below may not work for you.
+        each domain in unstable
+            - const href = "https://" + domain
+            p: a.warning(href=href)= domain

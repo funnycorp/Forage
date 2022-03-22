@@ -1,0 +1,192 @@
+# WARNING: This file contains the rules for the Womginx
+#          proxy and static file serving. Edit with care.
+
+# The configuration is similar to Womginx's configuration.
+# For a comparison, see below:
+# https://github.com/binary-person/womginx/blob/master/nginx.conf
+
+listen 443 ssl;
+
+merge_slashes off;
+proxy_ssl_server_name on;
+error_page 404 @referer-handler;
+error_page 504 @timedout;
+
+rewrite ^ $request_uri;
+
+# Unmerge double slashes without redirecting
+rewrite ^\/wgnx(?<mod>\/[^\/_]+_)?(?<url_preslash>\/(?:http|ws)s?:\/)(?<url_postslash>[^\/].*) /wgnx$mod$url_preslash/$url_postslash;
+
+# Insert a trailing slash (before any query string parameters) as needed
+rewrite ^(/wgnx/https?://[^/?]*)/?(.*) $1/$2;
+
+location = / {
+    rewrite ^ /index.html last;
+}
+
+location /wombat/dist {
+    rewrite ^/wombat/dist/(.*)$ $1 last;
+}
+
+location @referer-handler {
+    if ($dest_refererhost = '') {
+        return 404;
+    }
+    return 302 $proxy_prefix/wgnx/$dest_refererhost$request_uri;
+}
+
+# Requests proxied through Womginx
+location /wgnx {
+    proxy_pass_header Content-Type;
+    proxy_hide_header Content-Security-Policy;
+    proxy_set_header Accept-Encoding 'identity;q=1, *;q=0';
+    proxy_hide_header Strict-Transport-Security;
+    proxy_hide_header X-Frame-Options;
+    proxy_set_header Referer $rewrite_referer;
+    proxy_set_header Origin $reslashed_origin;
+    proxy_cookie_domain ~(.*) $host;
+    proxy_cookie_path ~(/.*) /wgnx/$dest_hostwithscheme$1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_buffer_size 16k;
+    proxy_busy_buffers_size 24k;
+    proxy_buffers 4 16k;
+    client_max_body_size 100M;
+
+    # Rewrite relative URLs without redirects
+    location ~^/wgnx(/[^_/]+_)?///(?<protocol_relative_url>.+) {
+        rewrite ^/wgnx(/[^_/]+_)?///(?<protocol_relative_url>.+) /wgnx$1/$relativescheme://$protocol_relative_url last;
+    }
+
+    # Redirect URLs without protocols
+    location ~^/wgnx(/[^/_]+_)?(?!(/[^/_]+_)?/(http|ws)s?://|//)/(?<rewrite_url_with_scheme>.*) {
+        return 302 $proxy_prefix/wgnx$1/$relativescheme://$rewrite_url_with_scheme;
+    }
+
+    # Handle WS connections
+    location ~^/wgnx/\d*ws_/(?<targeturl>.+) {
+        proxy_http_version 1.1;
+        proxy_pass $dest_fullwebsocketurl;
+    }
+
+    # Serve assets and workers
+    location ~^/wgnx/\d*(im|oe|wkr|sw)_/(?<targeturl>.+) {
+        proxy_pass $targeturl;
+    }
+
+    # Rewrite JS files
+    location ~^/wgnx/\d*js_/(?<targeturl>.+) {
+        sub_filter_once off;
+        sub_filter_types *;
+        sub_filter '.postMessage(' '.__WB_pmw(self.window).postMessage(';
+        sub_filter '.postMessage (' '.__WB_pmw(self.window).postMessage (';
+        sub_filter 'window.location' 'window.currentLocation';
+        proxy_pass $targeturl;
+    }
+
+    # Redirect URLs with unsupported modifications to their normal variants
+    location ~^/wgnx/[^_/]+_/(?<redirecttargeturl>.+) {
+        return 302 $proxy_prefix/wgnx/$redirecttargeturl;
+    }
+
+    location ~^/wgnx/(?<targeturl>.*)$ {
+        proxy_redirect ~^(https?://.+) $proxy_prefix/wgnx/$1;
+        sub_filter_once off;
+        set $processed_flag_attribute 'womginx-processed';
+
+        # Modify src attributes for URLs with relative schemes
+        sub_filter '<script src="//' '<script $processed_flag_attribute src="/wgnx/js_/$relativescheme://';
+        sub_filter '<script type="text/javascript" src="//' '<script type="text/javascript" $processed_flag_attribute src="/wgnx/js_/$relativescheme://';
+        sub_filter 'src="//' '$processed_flag_attribute src="/wgnx/$relativescheme://'; 
+
+        # Modify src attributes for URLs with relative paths
+        sub_filter '<script src="/' '<script $processed_flag_attribute src="/wgnx/js_/$dest_hostwithscheme/';
+        sub_filter '<script type="text/javascript" src="/' '<script type="text/javascript" $processed_flag_attribute src="/wgnx/js_/$dest_hostwithscheme/';
+        sub_filter 'src="/' '$processed_flag_attribute src="/wgnx/$dest_hostwithscheme/';
+
+        # Modify src attributes for HTTPS URLs with absolute paths
+        sub_filter '<script src="/' '<script $processed_flag_attribute src="/wgnx/js_/$dest_hostwithscheme/';
+        sub_filter '<script type="text/javascript" src="/' '<script type="text/javascript" $processed_flag_attribute src="/wgnx/js_/$dest_hostwithscheme/';
+        sub_filter 'src="/' '$processed_flag_attribute src="/wgnx/$dest_hostwithscheme/';
+
+        # Modify src attributes for HTTP URLs with absolute paths
+        sub_filter '<script src="http://' '<script $processed_flag_attribute src="/wgnx/js_/http://';
+        sub_filter '<script type="text/javascript" src="http://' '<script type="text/javascript" $processed_flag_attribute src="/wgnx/js_/http://';
+        sub_filter 'src="http://' '$processed_flag_attribute src="/wgnx/http://';
+
+        # Disable integrity checksums and CSP meta tags
+        sub_filter 'integrity="' 'integrifunny="';
+        sub_filter 'http-equiv="Content-Security-Policy"' 'http-equiv="Funnyable-Security-Policy"';
+
+        # The same five blocks as above, but with single quotes:
+
+        sub_filter "<script src='//" "<script $processed_flag_attribute src='/wgnx/js_/$relativescheme://";
+        sub_filter "<script type='text/javascript' src='//" "<script type='text/javascript' $processed_flag_attribute src='/wgnx/js_/$relativescheme://";
+        sub_filter "src='//" "$processed_flag_attribute src='/wgnx/$relativescheme://";
+
+        sub_filter "<script src='/" "<script $processed_flag_attribute src='/wgnx/js_/$dest_hostwithscheme/";
+        sub_filter "<script type='text/javascript' src='/" "<script type='text/javascript' $processed_flag_attribute src='/wgnx/js_/$dest_hostwithscheme/";
+        sub_filter "src='/" "$processed_flag_attribute src='/wgnx/$dest_hostwithscheme/";
+
+        sub_filter "<script src='/" "<script $processed_flag_attribute src='/wgnx/js_/$dest_hostwithscheme/";
+        sub_filter "<script type='text/javascript' src='/" "<script type='text/javascript' $processed_flag_attribute src='/wgnx/js_/$dest_hostwithscheme/";
+        sub_filter "src='/" "$processed_flag_attribute src='/wgnx/$dest_hostwithscheme/";
+
+        sub_filter "<script src='http://" "<script $processed_flag_attribute src='/wgnx/js_/http://";
+        sub_filter "<script type='text/javascript' src='http://" "<script type='text/javascript' $processed_flag_attribute src='/wgnx/js_/http://";
+        sub_filter "src='http://" "$processed_flag_attribute src='/wgnx/http://";
+
+        sub_filter "integrity='" "integrifunny='";
+        sub_filter "http-equiv='Content-Security-Policy'" "http-equiv='Funnyable-Security-Policy'";
+
+        # Insert wombat and Womginx's wombat handler scripts
+        sub_filter '<head>' '
+            <script
+                $processed_flag_attribute
+                src="/wombat.js"
+                referrerpolicy="no-referrer"
+            ></script>
+            <script
+                $processed_flag_attribute
+                src="/wombat-handler.js"
+                processed-attribute="$processed_flag_attribute"
+                referrerpolicy="no-referrer"
+            ></script>
+        ';
+
+        proxy_pass $targeturl;
+    }
+
+    add_header X-Content-Type $upstream_http_Content_Type;
+}
+
+# Let the Node.js gateway handle Corrosion and such
+location ~ /(main|gateway).* {
+    if ($dest_refererhost != '') {
+        return 404;
+    }
+
+    proxy_set_header Accept-Encoding "";
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Host $host:$server_port;
+    proxy_set_header X-Forwarded-Server $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+    proxy_set_header Host $host;
+
+    proxy_pass https://unix:/tmp/corrosion.socket:$request_uri;
+}
+
+location / {
+    if ($dest_refererhost != '') {
+        return 404;
+    }
+
+    root {{root}}/output;
+    try_files $uri $uri.html =404;
+}
+
+location @timedout {
+    rewrite ^ /timedout last;
+}

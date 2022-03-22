@@ -1,0 +1,23 @@
+# This file contains the configuration for each domain.
+# Add your domain to domains.json to generate its configuration.
+
+{{#each domains}}
+# {{@key}}
+server {
+    server_name {{@key}};
+    ssl_certificate {{cert}};
+    ssl_certificate_key {{key}};
+    include {{../root}}/generated-conf/proxy.conf;
+}
+
+{{/each}}
+
+# Add any extra configuration here, inside the Handlebars template.
+
+server {
+    listen 80;
+
+    location / {
+        return 308 https://$host$request_uri;
+    }
+}

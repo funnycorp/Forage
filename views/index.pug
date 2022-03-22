@@ -1,0 +1,14 @@
+extends _layout
+
+block declarations
+    - const title = "Forage: Free the Soul"
+
+block content
+    form#main.centered(action="/gateway", method="GET", autocomplete="off")
+        img#logo(src="https://twemoji.maxcdn.com/v/13.1.0/svg/1f332.svg")
+        h1 Forage
+        p Proxy front end to free the soul.
+        p
+            a(href="about") Here's how we do it.
+        input(type="text", name="url", placeholder="youtube.com", required)
+        input(type="submit", value="Onward!")

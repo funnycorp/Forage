@@ -1,0 +1,98 @@
+# WARNING: This file contains defines and basic configuration
+#          for the Womginx proxy. Edit with care.
+
+# The configuration is almost the same as Womginx's configuration.
+# For a comparison, see below:
+# https://github.com/binary-person/womginx/blob/master/nginx.conf
+
+worker_processes auto;
+pcre_jit on;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    # Include nginx's default MIME types
+    include mime.types;
+
+    map_hash_bucket_size 128;
+    resolver 1.1.1.1;
+
+    # gzip configuration
+    gzip on;
+    gzip_comp_level 3;
+    gzip_proxied any;
+    gzip_types *;
+
+    # DDoS protection
+    client_body_timeout 10s;
+    client_header_timeout 10s;
+    proxy_connect_timeout 20s;
+
+    # Turning off logs
+    access_log off;
+    error_log off;
+
+    limit_req_zone $binary_remote_addr zone=limitreq:20m rate=30r/s;
+    limit_req zone=limitreq burst=500 nodelay;
+    limit_req_status 429;
+    limit_conn_zone $binary_remote_addr zone=limitconn:20m;
+    limit_conn limitconn 30;
+
+    # "set scheme appropriately in case nginx is sitting behind servers like heroku"
+    map $http_x_forwarded_proto $relativescheme {
+        default $http_x_forwarded_proto;
+        '' $scheme;
+    }
+
+    # WS Upgrade
+    map $http_upgrade $connection_upgrade {
+        default Upgrade;
+        '' close;
+    }
+
+    map '' $proxy_prefix {
+        default $relativescheme://$host;
+    }
+
+    # "remove origin header from websocket url request"
+    # "convert wss://domain.com to https://domain.com"
+    map $targeturl $dest_fullwebsocketurl {
+        default $targeturl;
+        ~^ws(s)?:\/\/(.+)(\?womginx_ws_origin_header=.+)$ http$1://$2;
+        ~^ws(s)?://(.+) http$1://$2;
+    }
+
+    map $http_referer $dest_refererhost {
+        default '';
+        ~^https?://[^/]+/wgnx(/[^_/]+_)?/(?<targeturl>https?://[^/]+) $targeturl;
+    }
+
+    map $request_uri $dest_hostwithscheme {
+        default '';
+        ~^/wgnx(/[^_/]+_)?/(https?://[^/]+) $2;
+    }
+
+    map $http_referer $rewrite_referer {
+        default $http_referer;
+        ~^https?://[^/]+/wgnx(/[^_/]+_)?/(?<targeturl>.*) $targeturl;
+    }
+
+    # "rewrite origin header with destination host. if that doesn't exist, don't rewrite it"
+    # "also, get origin header from websocket request"
+    map $http_origin:womginxseparate:$request_uri $rewrite_origin {
+        default $dest_hostwithscheme;
+        # "origin maybe exists, womginx_ws_origin_header exists"
+        ~^.+(\?womginx_ws_origin_header=(.+))$ $2;
+        # "origin and womginx_ws_origin_header doesn't exist"
+        ~^:womginxseparate: '';
+    }
+
+    map $rewrite_origin $reslashed_origin {
+        default $rewrite_origin;
+        ~^(https?:/)([^/].*) $1/$2;
+    }
+
+    include {{root}}/generated-conf/servers.conf;
+}

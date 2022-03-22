@@ -1,0 +1,22 @@
+{
+    "womginx": [
+        "discord.com",
+        "ptb.discord.com",
+        "canary.discord.com",
+        "discord.gg"
+    ],
+    "redirects": {
+        "discord.com": {
+            "/": "/app"
+        },
+        "ptb.discord.com": {
+            "/": "/app"
+        },
+        "canary.discord.com": {
+            "/": "/app"
+        }
+    },
+    "blacklist": [
+        "accounts.google.com"
+    ]
+}
