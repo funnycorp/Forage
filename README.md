@@ -22,7 +22,7 @@ Then, setup the Forage code:
 git clone https://github.com/funnycorp/Forage
 cd Forage
 yarn
-ln -sf $(pwd)/generated-conf/main.conf /etc/nginx/nginx.conf
+sudo ln -sf $(pwd)/generated-conf/main.conf /etc/nginx/nginx.conf
 ```
 
 You may now edit the `config.json` file if you want to
