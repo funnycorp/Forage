@@ -7,20 +7,9 @@ const prepare = require("./prepare")
 const config = require("./config")
 const domains = require("./domains")
 
-// Bitnami's stupid Node 12 doesn't support ??= or ||=
-
-// config.womginx ??= []
-// config.redirects ??= {}
-// config.blacklist ??= []
-
-if (!config.womginx)
-    config.womginx = []
-
-if (!config.redirects)
-    config.redirects = {}
-
-if (!config.blacklist)
-    config.blacklist = []
+config.womginx ??= []
+config.redirects ??= {}
+config.blacklist ??= []
 
 const context = {
     config,
