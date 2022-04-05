@@ -1,5 +1,5 @@
 const {
-    rmdirSync,
+    rmSync,
     mkdirSync,
     readdirSync,
     readFileSync,
@@ -19,10 +19,9 @@ const outputBase = join(__dirname, "output")
 const generatedConfBase = join(__dirname, "generated-conf")
 
 module.exports = context => {
-    // Of course, Node 12 doesn't have rmSync(..., {force: true, recursive: true})
     console.log("Cleaning previous files...")
-    rmdirSync(outputBase, {recursive: true})
-    rmdirSync(generatedConfBase, {recursive: true})
+    rmSync(outputBase, {force: true, recursive: true})
+    rmSync(generatedConfBase, {force: true, recursive: true})
     mkdirSync(outputBase, {recursive: true})
     mkdirSync(generatedConfBase, {recursive: true})
 
@@ -34,7 +33,7 @@ module.exports = context => {
     for (const entry of views) {
         if (entry.startsWith("_") || !entry.endsWith(".pug"))
             continue
-        
+
         const output = renderFile(join(viewsBase, entry), {basedir: viewsBase, ...context})
         writeFileSync(join(outputBase, entry.replace(/\.pug$/, ".html")), output)
 
@@ -49,7 +48,7 @@ module.exports = context => {
     for (const entry of conf) {
         if (entry.startsWith("_") || !entry.endsWith(".hbs"))
             continue
-        
+
         const input = readFileSync(join(confBase, entry), "utf-8")
         const output = compile(input)(context)
         writeFileSync(join(generatedConfBase, entry.slice(0, -4)), output)
