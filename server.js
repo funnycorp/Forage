@@ -43,7 +43,7 @@ module.exports = config => {
                 givenUrl = "http://" + givenUrl
             }
         } else {
-            givenUrl = "https://google.com/search?q=" + givenUrl
+            givenUrl = "https://duckduckgo.com/?q=" + givenUrl
         }
 
         urlObject = new URL(givenUrl)
