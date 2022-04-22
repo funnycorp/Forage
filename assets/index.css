@@ -81,6 +81,10 @@ h1 {
     color: #c83;
 }
 
+.divider {
+    color: #3c4;
+}
+
 a {
     text-decoration: none;
     color: #0cf;
