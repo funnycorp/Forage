@@ -1,32 +1,57 @@
 {
     "funnycorp.us": {
         "stable": true,
-        "cert": "/home/ubuntu/certificates/_.funnycorp.us.crt",
-        "key": "/home/ubuntu/certificates/_.funnycorp.us.key"
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "unblo.cc": {
         "stable": true,
-        "cert": "/home/ubuntu/certificates/unblo.cc.crt",
-        "key": "/home/ubuntu/certificates/unblo.cc.key"
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "cuminside.us": {
         "stable": false,
-        "cert": "/home/ubuntu/certificates/cuminside.us.crt",
-        "key": "/home/ubuntu/certificates/cuminside.us.key"
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "fclink.xyz": {
         "stable": true,
-        "cert": "/home/ubuntu/certificates/fclink.xyz.crt",
-        "key": "/home/ubuntu/certificates/fclink.xyz.key"
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "goguardian.fun": {
         "stable": true,
-        "cert": "/home/ubuntu/certificates/goguardian.fun.crt",
-        "key": "/home/ubuntu/certificates/goguardian.fun.key"
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "forage.digital": {
         "stable": true,
-        "cert": "/home/ubuntu/certificates/forage.digital.crt",
-        "key": "/home/ubuntu/certificates/forage.digital.key"
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
+    },
+    "monkemonke.xyz": {
+        "stable": false,
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
+    },
+    "mathforage.xyz": {
+        "stable": true,
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
+    },
+    "foragemath.xyz": {
+        "stable": true,
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
+    },
+    "funnymath.xyz": {
+        "stable": true,
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
+    },
+    "unblockacademy.xyz": {
+        "stable": true,
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     }
 }
