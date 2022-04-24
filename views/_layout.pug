@@ -15,7 +15,6 @@ html(lang="en")
                 "A frontend for the Corrosion and Womginx proxies, " +
                 "letting you roam the web without any restrictions!"
             )
-            const favicon = "https://twemoji.maxcdn.com/v/13.1.0/72x72/1f332.png"
 
         meta(charset="UTF-8")
         meta(name="author", content="funnycorp")
@@ -25,7 +24,7 @@ html(lang="en")
         meta(property="og:type", content="website")
         meta(property="og:site_name", content="Forage")
         meta(property="og:title", content=title)
-        meta(property="og:image", content=favicon)
+        meta(property="og:image", content="/1f332.png")
         meta(property="og:description", content=description)
         meta(name="twitter:card", content="summary")
         meta(name="twitter:title", content="Forage")
@@ -33,13 +32,9 @@ html(lang="en")
 
         link(rel="preconnect", href="https://fonts.googleapis.com")
         link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
-        link(
-            href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700;800;900&display=swap",
-            rel="stylesheet"
-        )
         link(rel="stylesheet", href="/index.css")
         script(anti-fouc) document.style
-        link(rel="icon", type="image/png", href=favicon)
+        link(rel="icon", type="image/png", href="/1f332.png")
         title= title
     body.centered
         block content
