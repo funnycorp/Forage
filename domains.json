@@ -53,5 +53,10 @@
         "stable": true,
         "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
+    },
+    "forageub.com": {
+        "stable": true,
+        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
+        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     }
 }
