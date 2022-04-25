@@ -183,6 +183,7 @@ location / {
         return 404;
     }
 
+    add_header Cache-Control max-age=2678400;
     root {{root}}/output;
     try_files $uri $uri.html =404;
 }
