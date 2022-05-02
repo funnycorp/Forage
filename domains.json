@@ -20,7 +20,7 @@
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "goguardian.fun": {
-        "stable": true,
+        "stable": false,
         "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
@@ -50,7 +50,7 @@
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "unblockacademy.xyz": {
-        "stable": true,
+        "stable": false,
         "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
