@@ -30,6 +30,9 @@ http {
     client_header_timeout 10s;
     proxy_connect_timeout 20s;
 
+    # Large headers
+    large_client_header_buffers 6 32k;
+
     # Turning off logs
     access_log off;
     error_log off;
