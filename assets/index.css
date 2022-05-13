@@ -19,35 +19,12 @@ html {
     }
 }
 
-@property --angle {
-    syntax: "<angle>";
-    initial-value: 0deg;
-    inherits: false;
-}
-
-@keyframes gradient {
-    from {
-        --angle: 135deg;
-    }
-
-    to {
-        --angle: 215deg;
-    }
-}
-
 body {
     height: 100vh;
     width: 100vw;
     overflow: auto;
     margin: 0;
-
-    /* Fallback if custom property and therefore the animation is not supported. */
-    --angle: 135deg;
-    animation: gradient alternate ease-in-out 10s infinite;
-    background: linear-gradient(var(--angle), #111, #222);
-    background-size: 200%;
-    background-position: -100% -100%;
-
+    background: linear-gradient(135deg, #111, #222);
     color: #fff;
     font-family: "Inconsolata", "Cascadia Mono", monospace;
 }
