@@ -5,7 +5,7 @@
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
     "unblo.cc": {
-        "stable": true,
+        "stable": false,
         "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
