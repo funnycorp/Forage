@@ -19,11 +19,6 @@
         "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
         "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
     },
-    "goguardian.fun": {
-        "stable": false,
-        "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
-        "key": "/etc/letsencrypt/live/funnycorp.us/privkey.pem"
-    },
     "forage.digital": {
         "stable": true,
         "cert": "/etc/letsencrypt/live/funnycorp.us/cert.pem",
